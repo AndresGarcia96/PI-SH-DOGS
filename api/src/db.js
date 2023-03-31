@@ -33,6 +33,7 @@ let capsEntries = entries.map((entry) => [
   entry[0][0].toUpperCase() + entry[0].slice(1),
   entry[1],
 ]);
+
 sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
@@ -43,6 +44,17 @@ const { Dog, Temperament } = sequelize.models;
 // Product.hasMany(Reviews);
 Dog.belongsToMany(Temperament, { through: "Dog_Temperament" });
 Temperament.belongsToMany(Dog, { through: "Dog_Temperament" });
+
+///////// Codigo de tabla intermedia //////////
+
+// const DogTemperament = sequelize.define("dog_temperament", {
+//   id: {
+//     type: DataTypes.UUID,
+//     defaultValue: DataTypes.UUIDV4,
+//     allowNull: false,
+//     primaryKey: true,
+//   },
+// });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
