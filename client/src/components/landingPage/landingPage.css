@@ -1,0 +1,33 @@
+.landing-page {
+    background-image: url('https://c4.wallpaperflare.com/wallpaper/26/58/362/animales-corre-hierba-perro-wallpaper-preview.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .landing-page h1 {
+    font-size: 4.5rem;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  .landing-page button {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    border: none;
+    width: 20%;
+    border-radius: 31px;
+    background-color: #f2f2f2;
+    color: #272727;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .landing-page button:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }

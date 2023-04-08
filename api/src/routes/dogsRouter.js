@@ -19,20 +19,18 @@ const { Op } = require("sequelize");
 dogsRouter.get("/", async (req, res) => {
   try {
     const dogsDb = await findDogsDb();
-    // const dogsApi = await findDogsApi();
+    const dogsApi = await findDogsApi();
 
-    // if (dogsDb && dogsApi) {
-    //   const combinedDogs = [dogsDb, dogsApi];
-    //   res.status(200).json(combinedDogs);
-    // }
-    /* else */ if (dogsDb) {
+    if (dogsDb && dogsApi) {
+      const combinedDogs = [dogsDb, dogsApi];
+      res.status(200).json(combinedDogs);
+    } else if (dogsDb) {
       res.status(200).json(dogsDb);
     }
-    // ////// Si NO se encuentra en la base de datos, lo mando a buscar a la api
-    // else if (dogsApi) {
-    //   res.status(200).json(dogsApi);
-    // }
-    else {
+    ////// Si NO se encuentra en la base de datos, lo mando a buscar a la api
+    else if (dogsApi) {
+      res.status(200).json(dogsApi);
+    } else {
       res
         .status(200)
         .send("No se encontraron perros en la base de datos ni en la API");
