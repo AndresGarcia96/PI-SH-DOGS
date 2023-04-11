@@ -14,18 +14,14 @@ import {
 const initialState = {
   breeds: [],
   breedDetail: {},
-  allBreeds: [],
   allTemperaments: [],
-  filteredBreeds: [],
   filteredByTemperament: [],
   filteredByOrigin: [],
   searchResults: [],
-  selectedBreedId: null,
   sortOrder: "",
   currentPage: 1,
   breedsPerPage: 8,
   error: "",
-  findFailed: "",
 };
 
 const dogsReducer = (state = initialState, action) => {
@@ -41,6 +37,7 @@ const dogsReducer = (state = initialState, action) => {
         ...state,
         breeds: action.payload,
         currentPage: 1,
+        breedsPerPage: 8,
         error: "",
       };
     case GET_ALL_TEMPERAMENTS:
@@ -59,30 +56,37 @@ const dogsReducer = (state = initialState, action) => {
       return {
         ...state,
         filteredByOrigin: action.payload,
+        currentPage: 1,
+        breedsPerPage: 8,
         error: "",
       };
     case SORT_BREEDS_BY_NAME:
-      return {
-        ...state,
-        sortOrder: "name",
-        breeds: [...state.breeds].sort((a, b) => {
-          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-          if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-          return 0;
-        }),
-        error: "",
-      };
+      // obtenemos la copia de las razas actuales
+      const breedsByName = [...state.breeds];
+
+      // ordenamos las razas alfabéticamente
+      if (action.payload === "asc") {
+        breedsByName.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (action.payload === "desc") {
+        breedsByName.sort((a, b) => b.name.localeCompare(a.name));
+      }
+
+      // actualizamos el estado con las razas ordenadas y el orden actual
+      return { ...state, breeds: breedsByName, sortOrder: action.payload };
     case SORT_BREEDS_BY_WEIGHT:
-      return {
-        ...state,
-        sortOrder: "weight",
-        breeds: [...state.breeds].sort((a, b) => {
-          if (a.weight.imperial < b.weight.imperial) return -1;
-          if (a.weight.imperial > b.weight.imperial) return 1;
-          return 0;
-        }),
-        error: "",
-      };
+      // obtenemos la copia de las razas actuales
+      const breedsByWeight = [...state.breeds];
+
+      // ordenamos las razas por peso
+      if (action.payload === "asc") {
+        breedsByWeight.sort((a, b) => parseInt(a.weight) - parseInt(b.weight));
+      } else if (action.payload === "desc") {
+        breedsByWeight.sort((a, b) => parseInt(b.weight) - parseInt(a.weight));
+      }
+
+      // actualizamos el estado con las razas ordenadas y el orden actual
+      return { ...state, breeds: breedsByWeight, sortOrder: action.payload };
+
     case CHANGE_PAGE:
       return {
         ...state,
@@ -101,7 +105,7 @@ const dogsReducer = (state = initialState, action) => {
         filteredByTemperament: [],
         filteredByOrigin: [],
         sortOrder: "",
-        breeds: [...state.allBreeds],
+        breeds: [...state.breeds],
         error: "",
       };
     default:

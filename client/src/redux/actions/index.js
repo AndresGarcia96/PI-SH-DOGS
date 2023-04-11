@@ -11,7 +11,6 @@ export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const CLEAR_FILTERS = "CLEAR_FILTERS";
 
 import axios from "axios";
-import { findDogsApi, findDogsDb } from "./aux";
 
 // acción para encontrar razas de perro por su nombre o todos
 export const findBreeds = (name) => async (dispatch) => {
@@ -51,35 +50,38 @@ export const getAllTemperaments = () => async (dispatch) => {
 // acción para filtrar los perros por temperamento
 export const filterByTemperament = (temperament) => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `http://localhost:3001/dogs?temperament=${temperament}`
+    // Obtener todas las razas de perros
+    const resBreeds = await axios.get("http://localhost:3001/dogs");
+    const allBreeds = resBreeds.data;
+
+    // Obtener todos los temperamentos
+    const resTemperaments = await axios.get(
+      "http://localhost:3001/dogs/temperaments"
     );
-    dispatch({ type: FILTER_BY_TEMPERAMENT, payload: res.data });
+    const allTemperaments = resTemperaments.data.map((temp) => temp.name);
+
+    // Comprobar si el temperamento existe
+    if (allTemperaments.includes(temperament)) {
+      // Filtrar los perros que tienen ese temperamento
+      const filteredDogs = allBreeds.filter((breed) =>
+        breed.temperaments?.includes(temperament)
+      );
+      dispatch({ type: FILTER_BY_TEMPERAMENT, payload: filteredDogs });
+    } else {
+      console.error(`Temperamento ${temperament} no encontrado.`);
+    }
   } catch (error) {
     console.error(error);
   }
 };
 
 // acción para filtrar por origen, ya sea obtener los perros de la API externa u obtener los perros de la base de datos interna
-export const filterByOrigin = (origin) => async (dispatch) => {
+export const filterByOrigin = () => async (dispatch) => {
   try {
-    let dogs;
-    if (origin === "api") {
-      dogs = await findDogsApi();
-    } else if (origin === "db") {
-      dogs = await findDogsDb();
-    }
-    // Filtrar los perros según su origen
-    const filteredDogs = dogs.filter((dog) => {
-      if (origin === "api") {
-        return !dog.createdInDb;
-      } else if (origin === "db") {
-        return dog.createdInDb;
-      }
-    });
+    const res = await axios.get(`http://localhost:3001/dogs`);
     dispatch({
       type: FILTER_BY_ORIGIN,
-      payload: filteredDogs,
+      payload: res.data,
     });
   } catch (error) {
     console.log(error);
@@ -87,47 +89,13 @@ export const filterByOrigin = (origin) => async (dispatch) => {
 };
 
 // acción para ordenar las razas de perros alfabéticamente
-export const sortBreedsByName = (order) => async (dispatch, getState) => {
-  const breeds = getState().breeds;
-  let sortedBreeds = [...breeds];
-
-  if (order === "asc") {
-    sortedBreeds.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
-  } else if (order === "desc") {
-    sortedBreeds.sort((a, b) => {
-      if (a.name > b.name) {
-        return -1;
-      }
-      if (a.name < b.name) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  dispatch({ type: SORT_BREEDS_BY_NAME, payload: sortedBreeds });
+export const sortBreedsByName = (order) => async (dispatch) => {
+  dispatch({ type: SORT_BREEDS_BY_NAME, payload: order });
 };
 
 // acción para ordenar las razas de perros por peso
-export const sortBreedsByWeight = (order) => async (dispatch, getState) => {
-  const breeds = getState().breeds;
-  let sortedBreeds = [...breeds];
-
-  if (order === "asc") {
-    sortedBreeds.sort((a, b) => a.weight - b.weight);
-  } else if (order === "desc") {
-    sortedBreeds.sort((a, b) => b.weight - a.weight);
-  }
-
-  dispatch({ type: SORT_BREEDS_BY_WEIGHT, payload: sortedBreeds });
+export const sortBreedsByWeight = (order) => async (dispatch) => {
+  dispatch({ type: SORT_BREEDS_BY_WEIGHT, payload: order });
 };
 
 // acción para actualizar el número de página en la paginación

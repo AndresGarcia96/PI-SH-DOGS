@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header className="header">
       <div className="header-container">
         <div className="header-left">
           <Link to="/home" onClick={handleHome}>

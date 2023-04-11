@@ -9,8 +9,8 @@ const TemperamentList = ({ temperaments }) => {
   }
   return (
     <>
-      {temperaments.map((temp) => (
-        <li key={temp}>{temp}</li>
+      {temperaments.map((temp, index) => (
+        <li key={index}>{temp}</li>
       ))}
     </>
   );
@@ -32,17 +32,21 @@ const DogCard = ({ breed }) => {
         <h1>{breed.name}</h1>
         <div>
           <h3>Temperaments:</h3>
-          <TemperamentList key={breed.id} temperaments={breed.temperaments} />
+          <h5>
+            <TemperamentList key={breed.id} temperaments={breed.temperaments} />
+          </h5>
         </div>
         <div>
           <h3>Weight:</h3>
-          <h4>{breed.weight}</h4>
+          <h5>{breed.weight}</h5>
         </div>
-        <button className="button-detail">
-          <Link to={`/dogs/${breed.id}`} state={{ breed }}>
-            Ver detalle
-          </Link>
-        </button>
+        <div className="button-detail">
+          <button>
+            <Link to={{ pathname: `/dogs/${breed.id}`, state: { breed } }}>
+              Ver detalle
+            </Link>
+          </button>
+        </div>
       </div>
     </div>
   );

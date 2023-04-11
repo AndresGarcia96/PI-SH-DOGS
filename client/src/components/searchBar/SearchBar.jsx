@@ -17,10 +17,11 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="searchBar-container">
+    <div className="search-bar">
       <input
+        className="input-search"
         type="text"
-        placeholder="Search by name..."
+        placeholder="Search by breed name..."
         value={searchTerm}
         onChange={handleChange}
       />
@@ -35,7 +36,7 @@ const SearchBar = () => {
         </button>
       )}
 
-      <button className="search-button" onClick={handleSearch}>
+      <button type="search" className="search-button" onClick={handleSearch}>
         Search
       </button>
     </div>

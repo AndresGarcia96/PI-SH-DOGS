@@ -9,8 +9,8 @@ const TemperamentList = ({ temperaments }) => {
   }
   return (
     <>
-      {temperaments.map((temp) => (
-        <li key={temp}>{temp}</li>
+      {temperaments.map((temp, index) => (
+        <li key={index}>{temp}</li>
       ))}
     </>
   );
@@ -26,7 +26,7 @@ const DogDetail = (props) => {
   }, [dispatch, id]);
 
   return (
-    <div className="breeddetail-container">
+    <div className="breed-detail">
       <div className="header">
         <Header />
       </div>

@@ -22,10 +22,8 @@ dogsRouter.get("/", async (req, res) => {
     const dogsApi = await findDogsApi();
 
     if (dogsDb && dogsApi) {
-      const combinedDogs = [dogsDb, dogsApi];
+      const combinedDogs = dogsApi.concat(dogsDb); // <<== AQUI PUEDO AGREGAR "dogsDb"
       res.status(200).json(combinedDogs);
-    } else if (dogsDb) {
-      res.status(200).json(dogsDb);
     }
     ////// Si NO se encuentra en la base de datos, lo mando a buscar a la api
     else if (dogsApi) {
@@ -77,7 +75,7 @@ dogsRouter.get("/name", async (req, res) => {
   try {
     if (nameDogDb && nameDogApi) {
       // Se crea una variable donde se une la data de la base de datos y de la api
-      const combinedName = [nameDogDb, nameDogApi];
+      const combinedName = nameDogApi.concat(nameDogDb);
       res.status(200).json(combinedName);
     } else if (nameDogDb) {
       res.status(200).json(nameDogDb);
@@ -124,13 +122,14 @@ dogsRouter.post("/", async (req, res) => {
 ///////////// 📍📍📍 GET | /temperaments 📍📍📍 /////////////
 
 dogsRouter.get("/temperaments", async (req, res) => {
+  const { temperament } = req.query;
   try {
     // Si hay temperamentos almacenados, los envio como respuesta
     const getTempDb = await getDogDbTemperaments();
     const getTempApi = await getDogApiTemperaments();
 
     if (getTempDb && getTempApi) {
-      const combinatedTemps = [getTempDb, getTempApi];
+      const combinatedTemps = getTempApi.concat(getTempDb);
       res.status(200).json(combinatedTemps);
     } else if (getTempApi) {
       // Enviamos los temperamentos como respuesta
