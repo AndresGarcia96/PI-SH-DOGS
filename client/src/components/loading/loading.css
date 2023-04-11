@@ -1,0 +1,15 @@
+.loading {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    background-color: #f5f5f5;
+  }
+  
+  .loading-text {
+    font-size: 77px;
+    color: #0072af;
+    text-align: center;
+  }
+  

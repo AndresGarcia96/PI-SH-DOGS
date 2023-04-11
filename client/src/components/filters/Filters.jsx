@@ -7,13 +7,13 @@ import {
   filterByOrigin,
   clearFilters,
 } from "../../redux/actions/index";
+import "./filters.css";
 
 const Filters = () => {
   const dispatch = useDispatch();
   const [origin, setOrigin] = useState("");
   const [temperament, setTemperament] = useState("");
-  const filterOrigin = useSelector((state) => state.filteredByOrigin);
-  const filterTemperament = useSelector((state) => state.filteredByTemperament);
+
   const allTemperaments = useSelector((state) => state.allTemperaments);
 
   useEffect(() => {
@@ -32,14 +32,11 @@ const Filters = () => {
   const handleFilterByOrigin = (event) => {
     event.preventDefault();
     dispatch(filterByOrigin(origin));
-    console.log(filterOrigin);
   };
 
   const handleFilterByTemperament = (event) => {
     event.preventDefault();
     dispatch(filterByTemperament(temperament));
-    console.log(temperament);
-    console.log(filterTemperament);
   };
 
   const handleClearFilters = (event) => {

@@ -11,16 +11,24 @@ import Header from "../header/Header";
 import DogsList from "../dogsList/DogsList";
 import Filters from "../filters/Filters";
 import Sorting from "../sorting/Sorting";
-import Loading from "../loading/Loading";
+import "./homePage.css";
+import { useHistory } from "react-router-dom";
 
 const HomePage = () => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
   const breeds = useSelector((state) => state.breeds);
-  const temperaments = useSelector((state) => state.allTemperaments);
+  const loading = useSelector((state) => state.loadingBreeds);
+
+  const [reload, setReload] = useState(false);
+
+  const handleReload = () => {
+    setReload(!reload);
+  };
 
   useEffect(() => {
-    dispatch(findBreeds()).then(() => setLoading(false));
+    dispatch(findBreeds());
     dispatch(getAllTemperaments());
     dispatch(clearFilters());
     dispatch(clearSearch());
@@ -29,7 +37,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <div className="header">
-        <Header />
+        <Header onReload={handleReload} />
       </div>
 
       <div className="search-bar">
@@ -37,9 +45,13 @@ const HomePage = () => {
       </div>
 
       <div className="filtersAndSorting">
-        <Filters temperaments={temperaments} />
+        <Filters />
         <Sorting />
       </div>
+
+      <button className="create-newdog" onClick={() => history.push("/create")}>
+        Created New Dog
+      </button>
 
       <div className="dogs-list">
         <div className="loading">{loading && <h2>Loading...</h2>}</div>
@@ -50,7 +62,7 @@ const HomePage = () => {
           )}
         </div>
 
-        {!loading && breeds.length > 0 && <DogsList />}
+        {!loading && breeds.length > 0 && <DogsList key={reload} />}
       </div>
     </div>
   );

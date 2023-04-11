@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findBreeds } from "../../redux/actions";
+import "./searchBar.css";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const SearchBar = () => {
     e.preventDefault();
     dispatch(findBreeds(searchTerm.trim()));
     setSearchTerm("");
+    console.log(searchTerm);
   };
 
   return (

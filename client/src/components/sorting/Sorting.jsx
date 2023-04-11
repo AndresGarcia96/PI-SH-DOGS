@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { sortBreedsByName, sortBreedsByWeight } from "../../redux/actions";
+import "./sorting.css";
 
 const Sorting = () => {
   const dispatch = useDispatch();
@@ -9,36 +10,34 @@ const Sorting = () => {
 
   const handleNameSort = () => {
     if (nameOrder === "asc" || nameOrder === "") {
-      dispatch(sortBreedsByName("desc"));
+      dispatch(sortBreedsByName("descName"));
       setNameOrder("desc");
     } else {
-      dispatch(sortBreedsByName("asc"));
+      dispatch(sortBreedsByName("ascName"));
       setNameOrder("asc");
     }
-    // reset weightOrder to an empty string to avoid conflicting orders
     setWeightOrder("");
   };
 
   const handleWeightSort = () => {
     if (weightOrder === "asc" || weightOrder === "") {
-      dispatch(sortBreedsByWeight("desc"));
+      dispatch(sortBreedsByWeight("descWeight"));
       setWeightOrder("desc");
     } else {
-      dispatch(sortBreedsByWeight("asc"));
+      dispatch(sortBreedsByWeight("ascWeight"));
       setWeightOrder("asc");
     }
-    // reset nameOrder to an empty string to avoid conflicting orders
     setNameOrder("");
   };
 
   return (
     <div className="sorting">
       <label>Sort by:</label>
-      <button onClick={handleNameSort}>
-        Name {nameOrder === "asc" ? "▼" : nameOrder === "desc" ? "▲" : ""}
+      <button className="namesorting-button" onClick={handleNameSort}>
+        Name {nameOrder === "desc" ? "▼" : nameOrder === "asc" ? "▲" : ""}
       </button>
-      <button onClick={handleWeightSort}>
-        Weight {weightOrder === "asc" ? "▼" : weightOrder === "desc" ? "▲" : ""}
+      <button className="weightsorting-button" onClick={handleWeightSort}>
+        Weight {weightOrder === "desc" ? "▼" : weightOrder === "asc" ? "▲" : ""}
       </button>
     </div>
   );

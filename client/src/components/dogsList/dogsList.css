@@ -1,0 +1,21 @@
+.dogsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px;
+    padding: 10px;
+  }
+  
+  .pagination {
+    margin-bottom: 10px;
+  }
+  
+  .dogCardAllDogs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 30px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+  }
+  

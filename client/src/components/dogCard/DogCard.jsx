@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { getBreedDetail } from "../../redux/actions";
 import { Link } from "react-router-dom";
+import "./dogCard.css";
 
 const TemperamentList = ({ temperaments }) => {
   if (!Array.isArray(temperaments)) {
@@ -43,7 +44,7 @@ const DogCard = ({ breed }) => {
         <div className="button-detail">
           <button>
             <Link to={{ pathname: `/dogs/${breed.id}`, state: { breed } }}>
-              Ver detalle
+              See details
             </Link>
           </button>
         </div>

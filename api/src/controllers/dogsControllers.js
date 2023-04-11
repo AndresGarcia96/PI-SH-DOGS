@@ -6,19 +6,31 @@ const fetch = (...args) =>
 ////////////////////////////////////////////////
 
 const findDogsDb = async () => {
-  const dogs = await Dog.findAll({
-    include: {
-      model: Temperament,
-      // Solo ver el atributo "name" de la tabla del modelo "Temperament"
-      attributes: ["name"],
-      // Para ignorar o ver los atributos de la tabla se hace esto:
-      through: {
-        // Aqui se pasan los atributos, sino se pasa ninguno no se muestra nada
-        attributes: [],
+  try {
+    const result = await Dog.findAll({
+      include: {
+        model: Temperament,
+        // Solo ver el atributo "name" de la tabla del modelo "Temperament"
+        attributes: ["name"],
+        // Para ignorar o ver los atributos de la tabla se hace esto:
+        through: {
+          // Aqui se pasan los atributos, sino se pasa ninguno no se muestra nada
+          attributes: [],
+        },
       },
-    },
-  });
-  if (dogs.length > 0) return dogs;
+    });
+
+    if (result.length > 0)
+      return result
+        .map((data) => data.dataValues)
+        .map((dog) => ({
+          ...dog,
+          temperaments: dog.temperaments.map((t) => t.name),
+          source: "db",
+        }));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 ////////////////////////////////////////////////
@@ -38,8 +50,7 @@ const findDogsApi = async () => {
     weight: `${apiDog.weight.metric} kg`,
     life_span: apiDog.life_span,
     temperaments: apiDog.temperament?.split(",").map((t) => t.trim()),
-    // Verifico que no haya sido creado en base de datos:
-    createdInDb: false,
+    source: "api",
   }));
   if (dogsApi.length > 0) return dogsApi;
 };
@@ -105,10 +116,11 @@ const findNameDogDb = async (name) => {
       model: Temperament,
       attributes: ["name"],
       // Agrego "through" para evitar que me traiga datos adicionales de la tabla
-      through: { attributes: [] },
+      // through: { attributes: [] },
     },
   });
-  if (dbDogs.length > 0) return dbDogs;
+  if (dbDogs.length > 0)
+    return dbDogs.map((dogs) => ({ ...dogs, source: "db" }));
 };
 
 ////////////////////////////////////////////////
@@ -117,6 +129,7 @@ const findNameDogApi = async (name) => {
   const data = await fetch(
     `https://api.thedogapi.com/v1/breeds/search?q=${name}`
   );
+
   const apiData = await data.json();
   // Se crea un objeto mapeando toda la info que encontramos en la data de respuesta
   return apiData.map((dog) => {
@@ -127,7 +140,7 @@ const findNameDogApi = async (name) => {
       height: dog.height.metric,
       life_span: dog.life_span,
       image: dog.image?.url || null,
-      createdInDb: false,
+      source: "api",
       // Se une todo lo que arroje la data que se encuentre en "temperament" en un array
       temperaments: dog.temperament?.split(",").map((t) => t.trim()),
     };
@@ -141,7 +154,6 @@ const createdNewDogWithTemps = async (
   height,
   weight,
   life_span,
-  image,
   temperaments
 ) => {
   // Creamos la raza de perro en la base de datos:
@@ -150,8 +162,7 @@ const createdNewDogWithTemps = async (
     height,
     weight,
     life_span,
-    image,
-    // No agregamos temperaments porque se los vamos a asignar o a crear despues
+    image: "https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg",
   });
 
   // Luego, busco los temperamentos correspondientes en la base de datos

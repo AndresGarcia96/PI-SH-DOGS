@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import logo from "../../images/favicon2.png";
 import "./header.css";
-import { findBreeds } from "../../redux/actions";
+import {
+  findBreeds,
+  getAllTemperaments,
+  clearFilters,
+  clearSearch,
+} from "../../redux/actions";
 
 const Header = () => {
   const history = useHistory();
@@ -13,6 +18,10 @@ const Header = () => {
   const handleHome = () => {
     dispatch(findBreeds());
     history.push("/home");
+    window.location.reload();
+    dispatch(getAllTemperaments());
+    dispatch(clearFilters());
+    dispatch(clearSearch());
   };
 
   const handleExit = () => {

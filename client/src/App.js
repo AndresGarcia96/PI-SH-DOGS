@@ -4,14 +4,14 @@ import { BrowserRouter, Route } from "react-router-dom";
 import LandingPage from "./components/landingPage/LandingPage";
 import HomePage from "./components/homePage/HomePage";
 import DogDetail from "./components/dogDetail/DogDetail";
-import SearchBar from "./components/searchBar/SearchBar";
-import Header from "./components/header/Header";
+import FormPage from "./components/formPage/FormPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Route exact path="/" component={LandingPage} />
       <Route path="/home" component={HomePage} />
+      <Route path="/create" component={FormPage} />
       <Route path="/dogs/:id" component={DogDetail} />
     </BrowserRouter>
   );

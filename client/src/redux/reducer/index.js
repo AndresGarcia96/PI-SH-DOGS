@@ -1,4 +1,5 @@
 import {
+  CREATE_NEW_DOG,
   GET_BREEDS,
   GET_BREED_DETAIL,
   GET_ALL_TEMPERAMENTS,
@@ -9,23 +10,38 @@ import {
   CHANGE_PAGE,
   CLEAR_SEARCH,
   CLEAR_FILTERS,
+  LOADING_BREEDS,
 } from "../../redux/actions/index";
 
 const initialState = {
+  newDog: null,
   breeds: [],
   breedDetail: {},
   allTemperaments: [],
-  filteredByTemperament: [],
-  filteredByOrigin: [],
+  selectedTemperament: null,
+  selectedOrigin: null,
   searchResults: [],
   sortOrder: "",
   currentPage: 1,
   breedsPerPage: 8,
   error: "",
+  loadingBreeds: false,
 };
 
 const dogsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_NEW_DOG:
+      return {
+        ...state,
+        newDog: action.payload,
+        error: "",
+      };
+    case LOADING_BREEDS:
+      return {
+        ...state,
+        loadingBreeds: true,
+        error: "",
+      };
     case GET_BREED_DETAIL:
       return {
         ...state,
@@ -39,6 +55,7 @@ const dogsReducer = (state = initialState, action) => {
         currentPage: 1,
         breedsPerPage: 8,
         error: "",
+        loadingBreeds: false,
       };
     case GET_ALL_TEMPERAMENTS:
       return {
@@ -49,43 +66,27 @@ const dogsReducer = (state = initialState, action) => {
     case FILTER_BY_TEMPERAMENT:
       return {
         ...state,
-        filteredByTemperament: action.payload,
+        selectedTemperament: action.payload,
+        currentPage: 1,
         error: "",
       };
     case FILTER_BY_ORIGIN:
       return {
         ...state,
-        filteredByOrigin: action.payload,
+        selectedOrigin: action.payload,
         currentPage: 1,
-        breedsPerPage: 8,
         error: "",
       };
     case SORT_BREEDS_BY_NAME:
-      // obtenemos la copia de las razas actuales
-      const breedsByName = [...state.breeds];
-
-      // ordenamos las razas alfabéticamente
-      if (action.payload === "asc") {
-        breedsByName.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (action.payload === "desc") {
-        breedsByName.sort((a, b) => b.name.localeCompare(a.name));
-      }
-
-      // actualizamos el estado con las razas ordenadas y el orden actual
-      return { ...state, breeds: breedsByName, sortOrder: action.payload };
+      return {
+        ...state,
+        sortOrder: action.payload,
+      };
     case SORT_BREEDS_BY_WEIGHT:
-      // obtenemos la copia de las razas actuales
-      const breedsByWeight = [...state.breeds];
-
-      // ordenamos las razas por peso
-      if (action.payload === "asc") {
-        breedsByWeight.sort((a, b) => parseInt(a.weight) - parseInt(b.weight));
-      } else if (action.payload === "desc") {
-        breedsByWeight.sort((a, b) => parseInt(b.weight) - parseInt(a.weight));
-      }
-
-      // actualizamos el estado con las razas ordenadas y el orden actual
-      return { ...state, breeds: breedsByWeight, sortOrder: action.payload };
+      return {
+        ...state,
+        sortOrder: action.payload,
+      };
 
     case CHANGE_PAGE:
       return {
@@ -102,8 +103,8 @@ const dogsReducer = (state = initialState, action) => {
     case CLEAR_FILTERS:
       return {
         ...state,
-        filteredByTemperament: [],
-        filteredByOrigin: [],
+        filteredByTemperament: null,
+        filteredByOrigin: null,
         sortOrder: "",
         breeds: [...state.breeds],
         error: "",

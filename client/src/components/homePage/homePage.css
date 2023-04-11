@@ -1,0 +1,34 @@
+.home-page {
+  justify-content: center;
+  margin-top: 72px;
+  height: 10vh;
+  width: 100vmax;
+    font-family: "Open Sans", sans-serif;
+    color: #2a2a2a;
+    background-color:whitesmoke;
+  }
+  
+  .dog-notfound h2 {
+    font-size: 31px;
+    font-weight: bold;
+    color: #310000;
+  }
+
+  .create-newdog {
+margin-left: 77px;
+margin-bottom: 31px;
+    display: flex;
+    font-size: 17px;
+    color: #fff;
+    background-color: #009669;
+    border: none;
+    border-radius: 22px;
+    cursor: pointer;
+    padding: 8px 22px;
+    transition: background-color 0.2s ease-in-out;
+    outline: none;
+  }
+  
+  .create-newdog:hover {
+    background-color: #003123;
+  }

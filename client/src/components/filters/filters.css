@@ -1,0 +1,58 @@
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 13px;
+    border-radius: 13px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+  }
+  
+  .filters form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filters label {
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .filters select {
+    padding: 8px;
+    border-radius: 13px;
+    border: none;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #626262;
+  }
+  
+  .filters button {
+    padding: 8px 15px;
+    border-radius: 22px;
+    border: none;
+    background-color: #0069c6;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filters button:hover {
+    background-color: #00396b;
+  }
+  
+  .filters .clearfilters-button {
+    margin-left: 10px;
+    background-color: #c21300;
+    border-radius: 22px;
+  }
+  
+  .filters .clearfilters-button:hover {
+    background-color: #720b00;
+  }
+  

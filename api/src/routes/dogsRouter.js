@@ -77,8 +77,6 @@ dogsRouter.get("/name", async (req, res) => {
       // Se crea una variable donde se une la data de la base de datos y de la api
       const combinedName = nameDogApi.concat(nameDogDb);
       res.status(200).json(combinedName);
-    } else if (nameDogDb) {
-      res.status(200).json(nameDogDb);
     }
     // Si no encontramos la raza en nuestra base de datos, buscamos en la API
     else if (nameDogApi) {
@@ -100,7 +98,7 @@ dogsRouter.get("/name", async (req, res) => {
 
 dogsRouter.post("/", async (req, res) => {
   // Pasamos los datos que queremos solicitar por body:
-  const { name, height, weight, life_span, image, temperaments } = req.body;
+  const { name, height, weight, life_span, temperaments } = req.body;
 
   try {
     const createdNewDog = await createdNewDogWithTemps(
@@ -108,7 +106,6 @@ dogsRouter.post("/", async (req, res) => {
       height,
       weight,
       life_span,
-      image,
       temperaments
     );
     if (createdNewDog) {

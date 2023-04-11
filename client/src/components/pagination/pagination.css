@@ -1,8 +1,37 @@
 .pagination-bar {
-    height: 100%;
-    padding: 0;
-    margin: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
+    width: 1920px;
+    margin-left: 20px;
   }
+
+  .pagination {
+    display: flex;
+    gap: 13px;
+    }
+    
+    .page-button {
+    align-items: center;
+    font-size: 18px;
+    color: #313131;
+    background-color: #fff7f7;
+    border: none;
+    border-radius: 22px;
+    padding: 7px 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    outline: none;
+    }
+    
+    .page-button:hover {
+    background-color: #e7e7e7;
+    }
+    
+    .page-button:focus {
+    background-color: #afffc2;
+    }
+    
+    .page-button.active {
+    background-color: #009669;
+    color: #ffffff;
+    }
