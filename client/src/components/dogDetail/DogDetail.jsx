@@ -71,7 +71,7 @@ const DogDetail = (props) => {
           </div>
         </div>
         <div className="back-button-detail">
-          <button onClick={handleGoBack}>Volver atrás</button>
+          <button onClick={handleGoBack}>Go Back</button>
         </div>
       </div>
     </div>

@@ -10,64 +10,83 @@
     z-index: 999;
   }
 
-  .form-page-container {
+  .form-create {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem auto;
-    max-width: 800px;
-    padding: 2rem;
-    background-color: #f5f5f5;
-    border-radius: 0.5rem;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    margin-top: 40px;
   }
   
-  .form-page-container form {
+  .form-createnewdog {
+    margin-top: 72px;
+    margin-bottom: 88px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 720px;
+    padding: 27px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.7);
+  }
+  .form-create h2 {
+    font-size: 31px;
+    font-weight: bolder;
+    margin: 20px;
+    color:#3b3b3b;
+  }
+  
+  .form-name,
+  .form-height,
+  .form-weight,
+  .form-lifespan,
+  .form-temperament {
+    font-size: 22px;
+    font-weight:bold;
+    margin-bottom: 13px;
+    color: #4d4d4d;
+  }
+  
+  .input-createdog {
     width: 100%;
-  }
-  
-  .form-page-container label {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .form-page-container input {
-    font-size: 1rem;
-    padding: 0.5rem;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
     border: none;
-    border-radius: 0.25rem;
-    margin-bottom: 1rem;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 22px;
+    background-color: #efefef;
   }
   
-  .form-page-container input[type="submit"] {
-    background-color: #0077cc;
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    border: none;
-    cursor: pointer;
+  .input-createdog:focus {
+    background-color: #ffffff;
+    box-shadow: 0 0 5px #c7c7c7;
   }
   
-  .form-page-container input[type="submit"]:hover {
-    background-color: #005fa3;
+  .createdNewDog {
+    margin-top: 22px;
+    margin-bottom: 31px;
+        display: flex;
+        height: 45px;
+        font-size: 22px;
+        font-weight: bolder;
+        color: #fff;
+        background-color: #009669;
+        border: none;
+        border-radius: 22px;
+        cursor: pointer;
+        padding: 8px 22px;
+        transition: background-color 0.2s ease-in-out;
+        outline: none;
   }
   
-  .form-page-container input:focus {
-    outline: none;
-    box-shadow: 0px 0px 3px rgba(0, 119, 204, 0.8);
+  .createdNewDog:hover {
+    background-color: #006949;
   }
   
-  .form-page-container input:invalid {
-    border: 1px solid red;
+  @media only screen and (max-width: 600px) {
+    .form {
+      width: 90%;
+    }
   }
-  
-  .form-page-container input:valid {
-    border: 1px solid green;
-  }
-  

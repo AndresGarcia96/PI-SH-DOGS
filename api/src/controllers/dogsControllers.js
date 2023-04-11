@@ -162,7 +162,8 @@ const createdNewDogWithTemps = async (
     height,
     weight,
     life_span,
-    image: "https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg",
+    image:
+      "https://imengine.prod.srp.navigacloud.com/?uuid=e1dc4d68-fa49-5593-8efa-31221508e04e&type=primary&q=72&width=1200",
   });
 
   // Luego, busco los temperamentos correspondientes en la base de datos
