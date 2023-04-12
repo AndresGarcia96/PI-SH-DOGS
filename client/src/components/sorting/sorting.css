@@ -1,8 +1,8 @@
 .sorting {
+  margin-top: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 13px;
   }
   
   .sorting label {

@@ -11,13 +11,13 @@ import Header from "../header/Header";
 import DogsList from "../dogsList/DogsList";
 import Filters from "../filters/Filters";
 import Sorting from "../sorting/Sorting";
-import "./homePage.css";
 import { useHistory } from "react-router-dom";
+import "./homePage.css";
 
 const HomePage = () => {
   const history = useHistory();
-
   const dispatch = useDispatch();
+
   const breeds = useSelector((state) => state.breeds);
   const loading = useSelector((state) => state.loadingBreeds);
 

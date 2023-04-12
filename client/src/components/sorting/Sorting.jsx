@@ -5,6 +5,7 @@ import "./sorting.css";
 
 const Sorting = () => {
   const dispatch = useDispatch();
+
   const [nameOrder, setNameOrder] = useState("");
   const [weightOrder, setWeightOrder] = useState("");
 

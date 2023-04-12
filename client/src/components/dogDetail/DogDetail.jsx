@@ -19,7 +19,9 @@ const TemperamentList = ({ temperaments }) => {
 
 const DogDetail = (props) => {
   const dispatch = useDispatch();
+
   const breedDetail = useSelector((state) => state.breedDetail);
+
   const { id } = props.match.params;
 
   useEffect(() => {

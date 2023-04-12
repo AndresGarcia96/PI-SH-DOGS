@@ -233,10 +233,12 @@ const getDogApiTemperaments = async () => {
       Temperament.create({ name: temp });
     })
   );
-  const dbTemperamentsFind = await Temperament.findAll({
-    attributes: ["id", "name"],
-  });
-  return dbTemperamentsFind;
+  if (dbTemperamentsCreate) {
+    const dbTemperamentsFind = await Temperament.findAll({
+      attributes: ["id", "name"],
+    });
+    return dbTemperamentsFind;
+  }
 };
 
 module.exports = {

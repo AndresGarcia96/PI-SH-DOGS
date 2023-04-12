@@ -11,6 +11,7 @@ import "./filters.css";
 
 const Filters = () => {
   const dispatch = useDispatch();
+
   const [origin, setOrigin] = useState("");
   const [temperament, setTemperament] = useState("");
 

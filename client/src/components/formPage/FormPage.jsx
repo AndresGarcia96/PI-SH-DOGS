@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createNewDog } from "../../redux/actions/index";
 import { useHistory } from "react-router-dom";
+import { createNewDog } from "../../redux/actions/index";
 import Header from "../header/Header";
 import "./formpage.css";
 
@@ -93,6 +93,7 @@ const FormPage = (props) => {
         />
 
         <br />
+
         <label className="form-weight" htmlFor="Weight">
           Weight:
         </label>
