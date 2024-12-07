@@ -48,7 +48,7 @@ const findDogsApi = async () => {
       if (apiDog.reference_image_id) {
         try {
           const imageResponse = await fetch(
-            `https://api.thecatapi.com/v1/images/${apiDog.reference_image_id}`
+            `https://api.thedogapi.com/v1/images/${apiDog.reference_image_id}`
           );
           const imageData = await imageResponse.json();
           imageUrl = imageData.url; // Extraemos la URL definitiva
@@ -117,7 +117,7 @@ const dataDogGetIdRaza = async (idRaza) => {
     if (apiDogData.reference_image_id) {
       try {
         const imageResponse = await fetch(
-          `https://api.thecatapi.com/v1/images/${apiDogData.reference_image_id}`
+          `https://api.thedogapi.com/v1/images/${apiDogData.reference_image_id}`
         );
         const imageData = await imageResponse.json();
         imageUrl = imageData.url || null;
@@ -185,7 +185,7 @@ const findNameDogApi = async (name) => {
         if (dog.reference_image_id) {
           try {
             const imageResponse = await fetch(
-              `https://api.thecatapi.com/v1/images/${dog.reference_image_id}`
+              `https://api.thedogapi.com/v1/images/${dog.reference_image_id}`
             );
             const imageData = await imageResponse.json();
             imageUrl = imageData.url || null;
