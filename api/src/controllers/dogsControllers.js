@@ -36,25 +36,42 @@ const findDogsDb = async () => {
 ////////////////////////////////////////////////
 
 const findDogsApi = async () => {
+  // Primera solicitud: Obtener todos los perros
   const apiData = await fetch(`https://api.thedogapi.com/v1/breeds`);
-
   const apiDogs = await apiData.json();
 
-  // Transformo la respuesta de la api en un objeto igual al modelo "Dog" que cree anteriormente
-  // Y le agregamos los datos de temperamentos
-  const dogsApi = apiDogs.map((apiDog) => ({
-    id: apiDog.id,
-    name: apiDog.name,
-    image:
-      `https://cdn2.thecatapi.com/images/${apiDog.reference_image_id}.jpg` ||
-      null,
-    height: `${apiDog.height.metric} cm`,
-    weight: `${apiDog.weight.metric} kg`,
-    life_span: apiDog.life_span,
-    temperaments: apiDog.temperament?.split(",").map((t) => t.trim()),
-    source: "api",
-  }));
-  if (dogsApi.length > 0) return dogsApi;
+  // Transformar los datos obtenidos en un modelo específico
+  const dogsApi = await Promise.all(
+    apiDogs.map(async (apiDog) => {
+      // Si tiene un reference_image_id, obtenemos la URL de la imagen
+      let imageUrl = null;
+      if (apiDog.reference_image_id) {
+        try {
+          const imageResponse = await fetch(
+            `https://api.thecatapi.com/v1/images/${apiDog.reference_image_id}`
+          );
+          const imageData = await imageResponse.json();
+          imageUrl = imageData.url; // Extraemos la URL definitiva
+        } catch (error) {
+          console.error(`Error fetching image for ${apiDog.name}:`, error);
+        }
+      }
+
+      // Retornamos el objeto transformado
+      return {
+        id: apiDog.id,
+        name: apiDog.name,
+        image: imageUrl || null,
+        height: `${apiDog.height.metric} cm`,
+        weight: `${apiDog.weight.metric} kg`,
+        life_span: apiDog.life_span,
+        temperaments: apiDog.temperament?.split(",").map((t) => t.trim()),
+        source: "api",
+      };
+    })
+  );
+
+  return dogsApi; // Retornamos la lista completa de perros con imágenes
 };
 
 const validateUuid = async (idRaza) => {
@@ -78,31 +95,53 @@ const validateUuid = async (idRaza) => {
 ////////////////////////////////////////////////
 
 const dataDogGetIdRaza = async (idRaza) => {
-  // Si NO se encuentra en la base de datos, lo mando a buscar a la api
-  const apiData = await fetch(`https://api.thedogapi.com/v1/breeds/${idRaza}`);
+  try {
+    // Validador de ID que sean hasta 3 números y que no incluya letras
+    const idRazaRegex = /^\d{1,3}$/;
+    if (!idRaza || !idRazaRegex.test(idRaza)) {
+      throw new Error("ID de raza inválido");
+    }
 
-  const apiDogData = await apiData.json();
+    // Solicitar datos de la raza por ID
+    const apiData = await fetch(
+      `https://api.thedogapi.com/v1/breeds/${idRaza}`
+    );
+    const apiDogData = await apiData.json();
 
-  // Validador de ID que sean hasta 3 numeros y que no incluya letras
-  const idRazaRegex = /^\d{1,3}$/;
+    if (!apiDogData.id) {
+      throw new Error("Raza no encontrada en la API");
+    }
 
-  if (idRaza && idRazaRegex.test(idRaza) && apiDogData.id) {
-    // Transformo la respuesta de la api en un objeto igual al modelo "Dog" que cree anteriormente
-    // Y le agregamos los datos de temperamentos
+    // Obtener la imagen definitiva si tiene un `reference_image_id`
+    let imageUrl = null;
+    if (apiDogData.reference_image_id) {
+      try {
+        const imageResponse = await fetch(
+          `https://api.thecatapi.com/v1/images/${apiDogData.reference_image_id}`
+        );
+        const imageData = await imageResponse.json();
+        imageUrl = imageData.url || null;
+      } catch (error) {
+        console.error(`Error al obtener la imagen para ID ${idRaza}:`, error);
+      }
+    }
+
+    // Transformar la respuesta en un objeto con el modelo "Dog"
     const dogApi = {
       id: apiDogData.id,
       name: apiDogData.name,
-      image:
-        `https://cdn2.thecatapi.com/images/${apiDogData.reference_image_id}.jpg` ||
-        null,
+      image: imageUrl,
       height: `${apiDogData.height?.metric} cm`,
       weight: `${apiDogData.weight?.metric} kg`,
       life_span: apiDogData.life_span,
       temperaments: apiDogData.temperament?.split(",").map((t) => t.trim()),
-      // Verifico que no haya sido creado en base de datos:
-      createdInDb: false,
+      createdInDb: false, // Verificación de si fue creado en la base de datos
     };
+
     return dogApi;
+  } catch (error) {
+    console.error(`Error en dataDogGetIdRaza: ${error.message}`);
+    return null; // Devuelve null si ocurre un error
   }
 };
 
@@ -130,27 +169,53 @@ const findNameDogDb = async (name) => {
 ////////////////////////////////////////////////
 
 const findNameDogApi = async (name) => {
-  const data = await fetch(
-    `https://api.thedogapi.com/v1/breeds/search?q=${name}`
-  );
+  try {
+    // Solicitar perros que coincidan con el nombre
+    const data = await fetch(
+      `https://api.thedogapi.com/v1/breeds/search?q=${name}`
+    );
+    const apiData = await data.json();
 
-  const apiData = await data.json();
-  // Se crea un objeto mapeando toda la info que encontramos en la data de respuesta
-  return apiData.map((dog) => {
-    return {
-      id: dog.id,
-      name: dog.name,
-      weight: dog.weight.metric,
-      height: dog.height.metric,
-      life_span: dog.life_span,
-      image:
-        `https://cdn2.thecatapi.com/images/${dog.reference_image_id}.jpg` ||
-        null,
-      source: "api",
-      // Se une todo lo que arroje la data que se encuentre en "temperament" en un array
-      temperaments: dog.temperament?.split(",").map((t) => t.trim()),
-    };
-  });
+    // Crear un objeto para cada perro en la respuesta
+    const dogs = await Promise.all(
+      apiData.map(async (dog) => {
+        let imageUrl = null;
+
+        // Obtener la URL definitiva de la imagen si tiene un reference_image_id
+        if (dog.reference_image_id) {
+          try {
+            const imageResponse = await fetch(
+              `https://api.thecatapi.com/v1/images/${dog.reference_image_id}`
+            );
+            const imageData = await imageResponse.json();
+            imageUrl = imageData.url || null;
+          } catch (error) {
+            console.error(
+              `Error al obtener la imagen para reference_image_id ${dog.reference_image_id}:`,
+              error
+            );
+          }
+        }
+
+        // Retornar el perro con todos sus datos formateados
+        return {
+          id: dog.id,
+          name: dog.name,
+          weight: dog.weight?.metric,
+          height: dog.height?.metric,
+          life_span: dog.life_span,
+          image: imageUrl,
+          source: "api",
+          temperaments: dog.temperament?.split(",").map((t) => t.trim()),
+        };
+      })
+    );
+
+    return dogs;
+  } catch (error) {
+    console.error(`Error en findNameDogApi: ${error.message}`);
+    return [];
+  }
 };
 
 ////////////////////////////////////////////////
