@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // Action Types
 export const CREATE_NEW_DOG = "CREATE_NEW_DOG";
 export const GET_BREEDS = "GET_ALL_BREEDS";
@@ -11,8 +13,6 @@ export const CHANGE_PAGE = "CHANGE_PAGE";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const CLEAR_FILTERS = "CLEAR_FILTERS";
 export const LOADING_BREEDS = "LOADING_BREEDS";
-
-import axios from "axios";
 
 // acción para encontrar razas de perro por su nombre o todos
 export const findBreeds = (name) => async (dispatch) => {
