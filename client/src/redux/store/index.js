@@ -15,7 +15,7 @@
 
 // export default store;
 
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import dogsReducer from "../reducer/index";

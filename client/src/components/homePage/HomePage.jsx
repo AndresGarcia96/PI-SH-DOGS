@@ -32,7 +32,7 @@ const HomePage = () => {
     dispatch(getAllTemperaments());
     dispatch(clearFilters());
     dispatch(clearSearch());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="home-page">
