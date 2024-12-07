@@ -20,9 +20,11 @@ export const findBreeds = (name) => async (dispatch) => {
     dispatch({ type: LOADING_BREEDS });
     let res = [];
     if (name) {
-      res = await axios.get(`http://localhost:3001/dogs/name?name=${name}`);
+      res = await axios.get(
+        `https://dog-store-back.onrender.com/dogs/name?name=${name}`
+      );
     } else {
-      res = await axios.get(`http://localhost:3001/dogs`);
+      res = await axios.get(`https://dog-store-back.onrender.com/dogs`);
     }
     dispatch({ type: GET_BREEDS, payload: res.data });
   } catch (error) {
@@ -34,7 +36,10 @@ export const findBreeds = (name) => async (dispatch) => {
 export const createNewDog = (dogData) => async (dispatch) => {
   try {
     console.log("dogData :>> ", dogData);
-    const res = await axios.post(`http://localhost:3001/dogs`, dogData);
+    const res = await axios.post(
+      `https://dog-store-back.onrender.com/dogs`,
+      dogData
+    );
     alert("Perro creado correctamente!");
     dispatch({ type: CREATE_NEW_DOG, payload: res.data });
   } catch (error) {
@@ -46,7 +51,9 @@ export const createNewDog = (dogData) => async (dispatch) => {
 // acción para obtener el detalle de una raza de perro en específico
 export const getBreedDetail = (id) => async (dispatch) => {
   try {
-    const res = await axios.get(`http://localhost:3001/dogs/id/${id}`);
+    const res = await axios.get(
+      `https://dog-store-back.onrender.com/dogs/id/${id}`
+    );
     dispatch({ type: GET_BREED_DETAIL, payload: res.data });
   } catch (error) {
     console.error(error);
@@ -56,7 +63,9 @@ export const getBreedDetail = (id) => async (dispatch) => {
 // acción para obtener todos los temperamentos de las razas de perros
 export const getAllTemperaments = () => async (dispatch) => {
   try {
-    const res = await axios.get("http://localhost:3001/dogs/temperaments");
+    const res = await axios.get(
+      "https://dog-store-back.onrender.com/dogs/temperaments"
+    );
     dispatch({ type: GET_ALL_TEMPERAMENTS, payload: res.data });
   } catch (error) {
     console.error(error);
