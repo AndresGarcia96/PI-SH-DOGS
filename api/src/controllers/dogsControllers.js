@@ -45,7 +45,9 @@ const findDogsApi = async () => {
   const dogsApi = apiDogs.map((apiDog) => ({
     id: apiDog.id,
     name: apiDog.name,
-    // image: apiDog.image.url || null,
+    image:
+      `https://cdn2.thecatapi.com/images/${apiDog.reference_image_id}.jpg` ||
+      null,
     height: `${apiDog.height.metric} cm`,
     weight: `${apiDog.weight.metric} kg`,
     life_span: apiDog.life_span,
@@ -90,7 +92,9 @@ const dataDogGetIdRaza = async (idRaza) => {
     const dogApi = {
       id: apiDogData.id,
       name: apiDogData.name,
-      // image: apiDogData.image?.url || null,
+      image:
+        `https://cdn2.thecatapi.com/images/${apiDogData.reference_image_id}.jpg` ||
+        null,
       height: `${apiDogData.height?.metric} cm`,
       weight: `${apiDogData.weight?.metric} kg`,
       life_span: apiDogData.life_span,
@@ -139,7 +143,9 @@ const findNameDogApi = async (name) => {
       weight: dog.weight.metric,
       height: dog.height.metric,
       life_span: dog.life_span,
-      // image: dog.image?.url || null,
+      image:
+        `https://cdn2.thecatapi.com/images/${dog.reference_image_id}.jpg` ||
+        null,
       source: "api",
       // Se une todo lo que arroje la data que se encuentre en "temperament" en un array
       temperaments: dog.temperament?.split(",").map((t) => t.trim()),
